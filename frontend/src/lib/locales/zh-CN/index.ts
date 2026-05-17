@@ -385,7 +385,7 @@ export const zhCN = {
     addExistingDesc: "从您的所有笔记本中选择已有的来源添加到当前笔记本。",
     searchPlaceholder: "通过名称或 URL 搜索来源...",
     noNotebooksFound: "未找到笔记本。",
-    showingFirst100: "仅显示前 100 个来源。请使用搜索功能查找特定来源。",
+    showingFirst100: "仅显示前 100 个来源。请使用搜索功能查找特定来源，或点击「全选」以包含其余来源。",
     selectedCount: "已选择 {count} 个来源",
     added: "已添加于 {date}",
     addUrl: "添加 URL",

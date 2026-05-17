@@ -385,7 +385,7 @@ export const zhTW = {
     addExistingDesc: "從您的所有筆記本中選擇已有的來源新增到當前筆記本。",
     searchPlaceholder: "通過名稱或 URL 搜尋來源...",
     noNotebooksFound: "未找到筆記本。",
-    showingFirst100: "僅顯示前 100 個來源。請使用搜尋功能查找特定來源。",
+    showingFirst100: "僅顯示前 100 個來源。請使用搜尋功能查找特定來源，或點擊「全選」以包含其餘來源。",
     selectedCount: "已選擇 {count} 個來源",
     added: "已新增於 {date}",
     addUrl: "新增 URL",

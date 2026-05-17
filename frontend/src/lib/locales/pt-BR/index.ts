@@ -385,7 +385,7 @@ export const ptBR = {
     addExistingDesc: "Selecione fontes existentes de todos os seus cadernos para adicionar ao atual.",
     searchPlaceholder: "Buscar fontes por nome ou URL...",
     noNotebooksFound: "Nenhum caderno encontrado.",
-    showingFirst100: "Mostrando as primeiras 100 fontes. Use a busca para encontrar específicas.",
+    showingFirst100: "Mostrando as primeiras 100 fontes. Use a busca para encontrar específicas, ou Selecionar todos para incluir as demais.",
     selectedCount: "{count} fontes selecionadas",
     added: "Adicionado em {date}",
     addUrl: "Adicionar URL",

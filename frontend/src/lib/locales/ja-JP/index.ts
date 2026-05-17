@@ -385,7 +385,7 @@ export const jaJP = {
     addExistingDesc: "すべてのノートブックから既存のソースを選択して現在のノートブックに追加します。",
     searchPlaceholder: "名前またはURLでソースを検索...",
     noNotebooksFound: "ノートブックが見つかりません。",
-    showingFirst100: "最初の100件を表示中。検索で特定のソースを探してください。",
+    showingFirst100: "最初の100件を表示中。特定のソースは検索で、残りも含めるには「すべて選択」をご利用ください。",
     selectedCount: "{count}件選択中",
     added: "{date}に追加",
     addUrl: "URLを追加",

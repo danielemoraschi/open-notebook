@@ -385,7 +385,7 @@ export const enUS = {
     addExistingDesc: "Select existing sources from across all your notebooks to add to the current one.",
     searchPlaceholder: "Search sources by name or URL...",
     noNotebooksFound: "No notebooks found.",
-    showingFirst100: "Showing first 100 sources. Use search to find specific ones.",
+    showingFirst100: "Showing first 100 sources. Use search to find specific ones, or Select all to include the rest.",
     selectedCount: "{count} sources selected",
     added: "Added on {date}",
     addUrl: "Add URL",

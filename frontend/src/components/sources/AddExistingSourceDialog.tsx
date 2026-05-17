@@ -42,6 +42,10 @@ export function AddExistingSourceDialog({
   const [allSources, setAllSources] = useState<SourceListResponse[]>([])
   const [filteredSources, setFilteredSources] = useState<SourceListResponse[]>([])
   const [isSearching, setIsSearching] = useState(false)
+  // True when the unfiltered list returned a full page, signalling more sources exist server-side.
+  const [hasMoreSources, setHasMoreSources] = useState(false)
+  const [isSelectingAll, setIsSelectingAll] = useState(false)
+  const SOURCES_PAGE_SIZE = 100
 
   // Get sources already in this notebook
   const { data: currentNotebookSources } = useSources(notebookId)
@@ -55,9 +59,10 @@ export function AddExistingSourceDialog({
   const loadAllSources = useCallback(async () => {
     try {
       setIsSearching(true)
-      // Use sources API directly to get all sources (max 100 per API limit)
+      // First page only (API caps at 100). A full page means more exist; we'll
+      // fetch the rest lazily if the user clicks Select all.
       const sources = await sourcesApi.list({
-        limit: 100,
+        limit: SOURCES_PAGE_SIZE,
         offset: 0,
         sort_by: 'created',
         sort_order: 'desc',
@@ -65,6 +70,7 @@ export function AddExistingSourceDialog({
 
       setAllSources(sources)
       setFilteredSources(sources)
+      setHasMoreSources(sources.length >= SOURCES_PAGE_SIZE)
     } catch (error) {
       console.error('Error loading sources:', error)
     } finally {
@@ -156,15 +162,49 @@ export function AddExistingSourceDialog({
     return 'indeterminate'
   }, [selectableIds, selectedSourceIds])
 
-  const handleToggleSelectAll = () => {
-    if (selectableIds.length === 0) return
+  const handleToggleSelectAll = async () => {
+    if (selectableIds.length === 0 && !hasMoreSources) return
+
     if (selectAllState === true) {
       // All visible selectable items are selected → drop them from the selection.
       const drop = new Set(selectableIds)
       setSelectedSourceIds(prev => prev.filter(id => !drop.has(id)))
-    } else {
-      // Otherwise (none or some selected) → add all selectable items in view.
+      return
+    }
+
+    const inSearchMode = debouncedSearchQuery.trim().length > 0
+
+    // In search mode, results are already capped at search-limit; just take what's visible.
+    // Same when the full list fits in one page.
+    if (inSearchMode || !hasMoreSources) {
       setSelectedSourceIds(prev => Array.from(new Set([...prev, ...selectableIds])))
+      return
+    }
+
+    // Truncated list with no search: paginate the server to gather every source id.
+    setIsSelectingAll(true)
+    try {
+      const collected = new Map<string, SourceListResponse>(allSources.map(s => [s.id, s]))
+      let offset = collected.size
+      // Stop when a page comes back short — that means we've drained the table.
+      while (true) {
+        const page = await sourcesApi.list({
+          limit: SOURCES_PAGE_SIZE,
+          offset,
+          sort_by: 'created',
+          sort_order: 'desc',
+        })
+        if (page.length === 0) break
+        for (const s of page) collected.set(s.id, s)
+        if (page.length < SOURCES_PAGE_SIZE) break
+        offset += page.length
+      }
+      const everyId = Array.from(collected.keys()).filter(id => !currentSourceIds.has(id))
+      setSelectedSourceIds(prev => Array.from(new Set([...prev, ...everyId])))
+    } catch (error) {
+      console.error('Error fetching all sources for select-all:', error)
+    } finally {
+      setIsSelectingAll(false)
     }
   }
 
@@ -241,14 +281,15 @@ export function AddExistingSourceDialog({
               id="select-all-sources"
               checked={selectAllState}
               onCheckedChange={handleToggleSelectAll}
-              disabled={selectableIds.length === 0}
+              disabled={isSelectingAll || (selectableIds.length === 0 && !hasMoreSources)}
               aria-label={t('common.selectAll')}
             />
             <label
               htmlFor="select-all-sources"
-              className="text-sm text-muted-foreground cursor-pointer select-none"
+              className="text-sm text-muted-foreground cursor-pointer select-none flex items-center gap-2"
             >
               {t('common.selectAll')}
+              {isSelectingAll && <LoaderIcon className="h-3 w-3 animate-spin" />}
             </label>
           </div>
 

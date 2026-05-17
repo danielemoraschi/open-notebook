@@ -385,7 +385,7 @@ export const frFR = {
     addExistingDesc: "Sélectionnez des sources existantes parmi tous vos carnets pour les ajouter au carnet actuel.",
     searchPlaceholder: "Rechercher des sources par nom ou URL...",
     noNotebooksFound: "Aucun carnet trouvé.",
-    showingFirst100: "Affichage des 100 premières sources. Utilisez la recherche pour en trouver des spécifiques.",
+    showingFirst100: "Affichage des 100 premières sources. Utilisez la recherche pour en trouver des spécifiques, ou Tout sélectionner pour inclure les autres.",
     selectedCount: "{count} sources sélectionnées",
     added: "Ajouté le {date}",
     addUrl: "Ajouter une URL",

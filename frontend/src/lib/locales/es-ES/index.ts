@@ -385,7 +385,7 @@ export const esES = {
     addExistingDesc: "Selecciona fuentes existentes de todos tus cuadernos para agregar al actual.",
     searchPlaceholder: "Buscar fuentes por nombre o URL...",
     noNotebooksFound: "No se encontraron cuadernos.",
-    showingFirst100: "Mostrando las primeras 100 fuentes. Usa la búsqueda para encontrar una específica.",
+    showingFirst100: "Mostrando las primeras 100 fuentes. Usa la búsqueda para encontrar una específica, o Seleccionar todo para incluir las demás.",
     selectedCount: "{count} fuentes seleccionadas",
     added: "Agregado el {date}",
     addUrl: "Agregar URL",

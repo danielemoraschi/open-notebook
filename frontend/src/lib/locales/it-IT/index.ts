@@ -385,7 +385,7 @@ export const itIT = {
     addExistingDesc: "Seleziona fonti esistenti da tutti i tuoi quaderni per aggiungerle a quello corrente.",
     searchPlaceholder: "Cerca fonti per nome o URL...",
     noNotebooksFound: "Nessun quaderno trovato.",
-    showingFirst100: "Mostrate le prime 100 fonti. Usa la ricerca per trovarne di specifiche.",
+    showingFirst100: "Mostrate le prime 100 fonti. Usa la ricerca per trovarne di specifiche, oppure Seleziona tutto per includere anche le altre.",
     selectedCount: "{count} fonti selezionate",
     added: "Aggiunto il {date}",
     addUrl: "Aggiungi URL",
