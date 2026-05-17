@@ -22,10 +22,9 @@ import { useNotebooks } from '@/lib/hooks/use-notebooks'
 import { useTransformations } from '@/lib/hooks/use-transformations'
 import { useCreateSource } from '@/lib/hooks/use-sources'
 import { useSettings } from '@/lib/hooks/use-settings'
+import { useMaxBatchSize } from '@/lib/hooks/use-config'
 import { CreateSourceRequest } from '@/lib/types/api'
 import { useTranslation } from '@/lib/hooks/use-translation'
-
-const MAX_BATCH_SIZE = 50
 
 const createSourceSchema = z.object({
   type: z.enum(['link', 'upload', 'text']),
@@ -119,6 +118,7 @@ export function AddSourceDialog({
   const { data: notebooks = [], isLoading: notebooksLoading } = useNotebooks()
   const { data: transformations = [], isLoading: transformationsLoading } = useTransformations()
   const { data: settings } = useSettings()
+  const maxBatchSize = useMaxBatchSize()
 
   // Form setup
   const {
@@ -204,7 +204,7 @@ export function AddSourceDialog({
   }, [selectedType, watchedUrl, watchedFile])
 
   // Check for batch size limit
-  const isOverLimit = itemCount > MAX_BATCH_SIZE
+  const isOverLimit = itemCount > maxBatchSize
 
   // Step validation - now reactive with watched values
   const isStepValid = (step: number): boolean => {
@@ -229,7 +229,7 @@ export function AddSourceDialog({
         }
         if (selectedType === 'upload') {
           if (watchedFile instanceof FileList) {
-            return watchedFile.length > 0 && watchedFile.length <= MAX_BATCH_SIZE
+            return watchedFile.length > 0 && watchedFile.length <= maxBatchSize
           }
           return !!watchedFile
         }
@@ -559,6 +559,7 @@ export function AddSourceDialog({
                 errors={errors}
                 urlValidationErrors={urlValidationErrors}
                 onClearUrlErrors={handleClearUrlErrors}
+                maxBatchSize={maxBatchSize}
               />
             )}
             

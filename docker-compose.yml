@@ -28,6 +28,9 @@ services:
       - SURREAL_PASSWORD=root
       - SURREAL_NAMESPACE=open_notebook
       - SURREAL_DATABASE=open_notebook
+
+      # OPTIONAL: Maximum number of files/URLs per batch upload in the Add Source dialog (default: 50)
+      # - OPEN_NOTEBOOK_MAX_BATCH_SIZE=50
     volumes:
       - ./notebook_data:/app/data
     depends_on:

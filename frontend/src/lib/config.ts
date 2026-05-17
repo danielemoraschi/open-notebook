@@ -68,6 +68,7 @@ async function fetchConfig(): Promise<AppConfig> {
   // This allows API_URL to be set at runtime (not baked into build)
   // Note: Endpoint is at /config (not /api/config) to avoid reverse proxy conflicts
   let runtimeApiUrl: string | null = null
+  let runtimeMaxBatchSize: number | undefined
   try {
     if (isDev) console.log('🔧 [Config] Attempting to fetch runtime config from /config endpoint...')
     const runtimeResponse = await fetch('/config', {
@@ -79,6 +80,9 @@ async function fetchConfig(): Promise<AppConfig> {
       // Treat empty string as "not set" to allow fallback to env var or default
       if (runtimeApiUrl === '') {
         runtimeApiUrl = null
+      }
+      if (typeof runtimeData.maxBatchSize === 'number' && runtimeData.maxBatchSize > 0) {
+        runtimeMaxBatchSize = runtimeData.maxBatchSize
       }
       if (isDev) console.log('✅ [Config] Runtime API URL from server:', runtimeApiUrl)
     } else {
@@ -126,6 +130,7 @@ async function fetchConfig(): Promise<AppConfig> {
         latestVersion: data.latestVersion || null,
         hasUpdate: data.hasUpdate || false,
         dbStatus: data.dbStatus, // Can be undefined for old backends
+        maxBatchSize: runtimeMaxBatchSize,
       }
       if (isDev) console.log('✅ [Config] Successfully loaded API config:', config)
       return config

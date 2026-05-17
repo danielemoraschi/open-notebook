@@ -1,5 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+const DEFAULT_MAX_BATCH_SIZE = 50
+
+function resolveMaxBatchSize(): number {
+  const raw = process.env.OPEN_NOTEBOOK_MAX_BATCH_SIZE
+  if (!raw) return DEFAULT_MAX_BATCH_SIZE
+  const parsed = Number.parseInt(raw, 10)
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    console.warn(`[runtime-config] Invalid OPEN_NOTEBOOK_MAX_BATCH_SIZE="${raw}", falling back to ${DEFAULT_MAX_BATCH_SIZE}`)
+    return DEFAULT_MAX_BATCH_SIZE
+  }
+  return parsed
+}
+
 /**
  * Runtime Configuration Endpoint
  *
@@ -10,6 +23,7 @@ import { NextRequest, NextResponse } from 'next/server'
  * - API_URL: Where the browser/client should make API requests (public/external URL)
  * - INTERNAL_API_URL: Where Next.js server-side should proxy API requests (internal URL)
  *   Default: http://localhost:5055 (used by Next.js rewrites in next.config.ts)
+ * - OPEN_NOTEBOOK_MAX_BATCH_SIZE: Maximum number of files/URLs per batch upload (default: 50)
  *
  * Why two different variables?
  * - API_URL: Used by browser clients, can be https://your-domain.com or http://server-ip:5055
@@ -23,12 +37,15 @@ import { NextRequest, NextResponse } from 'next/server'
  * This allows the same Docker image to work in different deployment scenarios.
  */
 export async function GET(request: NextRequest) {
+  const maxBatchSize = resolveMaxBatchSize()
+
   // Priority 1: Check if API_URL is explicitly set
   const envApiUrl = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL
 
   if (envApiUrl) {
     return NextResponse.json({
       apiUrl: envApiUrl,
+      maxBatchSize,
     })
   }
 
@@ -54,6 +71,7 @@ export async function GET(request: NextRequest) {
 
       return NextResponse.json({
         apiUrl,
+        maxBatchSize,
       })
     }
   } catch (error) {
@@ -64,5 +82,6 @@ export async function GET(request: NextRequest) {
   console.log('[runtime-config] Using fallback: http://localhost:5055')
   return NextResponse.json({
     apiUrl: 'http://localhost:5055',
+    maxBatchSize,
   })
 }
