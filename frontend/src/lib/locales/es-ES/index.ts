@@ -48,6 +48,7 @@ export const esES = {
     linked: "Vinculado",
     adding: "Agregando...",
     addSelected: "Agregar seleccionados",
+    selectAll: "Seleccionar todo",
     customModel: "Modelo personalizado",
     failed: "fallido",
     current: "Actual",

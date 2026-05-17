@@ -48,6 +48,7 @@ export const ruRU = {
     linked: "Связано",
     adding: "Добавление...",
     addSelected: "Добавить выбранное",
+    selectAll: "Выбрать все",
     customModel: "Своя модель",
     failed: "не удалось",
     current: "Текущий",

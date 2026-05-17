@@ -48,6 +48,7 @@ export const bnIN = {
     linked: "সংযুক্ত",
     adding: "যোগ করা হচ্ছে...",
     addSelected: "নির্বাচিত যোগ করুন",
+    selectAll: "সব নির্বাচন করুন",
     customModel: "কাস্টম মডেল",
     failed: "ব্যর্থ",
     current: "বর্তমান",

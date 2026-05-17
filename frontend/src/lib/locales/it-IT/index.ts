@@ -48,6 +48,7 @@ export const itIT = {
     linked: "Collegato",
     adding: "Aggiunta in corso...",
     addSelected: "Aggiungi selezionati",
+    selectAll: "Seleziona tutto",
     customModel: "Modello personalizzato",
     failed: "fallito",
     current: "Corrente",

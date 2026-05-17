@@ -48,6 +48,7 @@ export const ptBR = {
     linked: "Vinculado",
     adding: "Adicionando...",
     addSelected: "Adicionar Selecionados",
+    selectAll: "Selecionar todos",
     customModel: "Modelo Personalizado",
     failed: "falhou",
     current: "Atual",

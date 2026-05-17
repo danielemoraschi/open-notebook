@@ -48,6 +48,7 @@ export const jaJP = {
     linked: "リンク済み",
     adding: "追加中...",
     addSelected: "選択項目を追加",
+    selectAll: "すべて選択",
     customModel: "カスタムモデル",
     failed: "失敗",
     current: "現在",

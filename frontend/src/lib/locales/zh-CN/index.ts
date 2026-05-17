@@ -48,6 +48,7 @@ export const zhCN = {
     linked: "已关联",
     adding: "正在添加...",
     addSelected: "添加所选",
+    selectAll: "全选",
     customModel: "自定义模型",
     failed: "失败",
     current: "当前",

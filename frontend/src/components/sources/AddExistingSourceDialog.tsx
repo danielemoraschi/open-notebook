@@ -141,6 +141,33 @@ export function AddExistingSourceDialog({
     )
   }
 
+  // IDs in the current filter that the user is actually allowed to (de)select.
+  const selectableIds = useMemo(
+    () => filteredSources.filter(s => !currentSourceIds.has(s.id)).map(s => s.id),
+    [filteredSources, currentSourceIds]
+  )
+
+  const selectAllState: boolean | 'indeterminate' = useMemo(() => {
+    if (selectableIds.length === 0) return false
+    const selectedSet = new Set(selectedSourceIds)
+    const selectedInView = selectableIds.filter(id => selectedSet.has(id)).length
+    if (selectedInView === 0) return false
+    if (selectedInView === selectableIds.length) return true
+    return 'indeterminate'
+  }, [selectableIds, selectedSourceIds])
+
+  const handleToggleSelectAll = () => {
+    if (selectableIds.length === 0) return
+    if (selectAllState === true) {
+      // All visible selectable items are selected → drop them from the selection.
+      const drop = new Set(selectableIds)
+      setSelectedSourceIds(prev => prev.filter(id => !drop.has(id)))
+    } else {
+      // Otherwise (none or some selected) → add all selectable items in view.
+      setSelectedSourceIds(prev => Array.from(new Set([...prev, ...selectableIds])))
+    }
+  }
+
   const handleAddSelected = async () => {
     if (selectedSourceIds.length === 0) return
 
@@ -206,6 +233,23 @@ export function AddExistingSourceDialog({
             {isSearching && (
               <LoaderIcon className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin text-muted-foreground" />
             )}
+          </div>
+
+          {/* Select-all toggle */}
+          <div className="flex items-center gap-2 px-1">
+            <Checkbox
+              id="select-all-sources"
+              checked={selectAllState}
+              onCheckedChange={handleToggleSelectAll}
+              disabled={selectableIds.length === 0}
+              aria-label={t('common.selectAll')}
+            />
+            <label
+              htmlFor="select-all-sources"
+              className="text-sm text-muted-foreground cursor-pointer select-none"
+            >
+              {t('common.selectAll')}
+            </label>
           </div>
 
           {/* Source List */}
